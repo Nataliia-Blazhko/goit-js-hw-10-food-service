@@ -4,7 +4,7 @@ import menuTemplate from './templates/menu-list.hbs';
 
 const list = document.querySelector('ul.js-menu');
 const switchBtn = document.querySelector('#theme-switch-toggle');
-const wrapper = document.querySelector('body');
+const wrapper = document.body;
 
 list.innerHTML = menuTemplate(menu);
 
@@ -13,21 +13,19 @@ const Theme = {
   DARK: 'dark-theme',
 };
 
-if (localStorage.getItem('theme') !== null) {
-  wrapper.classList.add(Theme[localStorage.getItem('theme')]);
-  if (localStorage.getItem('theme') === 'DARK') {
-    switchBtn.checked = true;
-  }
-}
+const theme = localStorage.getItem('theme') || Theme.LIGHT;
+wrapper.classList.add(theme);
+localStorage.setItem('theme', theme);
+switchBtn.checked = theme === Theme.DARK;
 
 switchBtn.addEventListener('change', event => {
   if (event.target.checked) {
     wrapper.classList.add(Theme.DARK);
     wrapper.classList.remove(Theme.LIGHT);
-    localStorage.setItem('theme', 'DARK');
+    localStorage.setItem('theme', Theme.DARK);
   } else {
     wrapper.classList.remove(Theme.DARK);
     wrapper.classList.add(Theme.LIGHT);
-    localStorage.setItem('theme', 'LIGHT');
+    localStorage.setItem('theme', Theme.LIGHT);
   }
 });
